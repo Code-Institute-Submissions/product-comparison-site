@@ -49,7 +49,7 @@ ROOT_URLCONF = 'product_comparison.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'staticfiles')],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,13 +123,13 @@ STATIC_URL = 'static/'
 
 # Directories where Django will look for static files during development
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend', 'build', 'static'),
+    os.path.join(BASE_DIR, 'frontend/build/static'),
 ]
 
 # Directory where collected static files will be stored
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Directory where static files are served from in production
+# Directory where static files are served from in production 
 # (if using Whitenoise)
 WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'build')
 
