@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -49,7 +49,7 @@ ROOT_URLCONF = 'product_comparison.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'frontend/build')],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend', 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -131,7 +131,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Directory where static files are served from in production 
 # (if using Whitenoise)
-WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'build')
+# WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'build')
+
+# Use Whitenoise to manage static files in production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
