@@ -1,2 +1,2 @@
 release: python manage.py collectstatic --noinput
-web: gunicorn product_comparison.wsgi:application
+web: npm run build && gunicorn product_comparison.wsgi --log-file -
