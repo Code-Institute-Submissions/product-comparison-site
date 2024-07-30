@@ -123,7 +123,7 @@ STATIC_URL = 'static/'
 
 # Directories where Django will look for static files during development
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/build/static'),
+    os.path.join(BASE_DIR, 'frontend', 'build', 'static'),
 ]
 
 # Directory where collected static files will be stored
