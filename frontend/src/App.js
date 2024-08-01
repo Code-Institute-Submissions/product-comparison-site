@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ProductList from './components/ProductList';
+import Login from './components/Login';
+import Register from './components/Register';
+import Logout from './components/Logout';
 import './styles/App.css';
 
 const App = () => {
