@@ -3,17 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../api/setupAxios';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/accounts/login/', { email, password });
+      const response = await axios.post('/accounts/login/', { login, password });
+      
       if (response.status === 200) {
-        // Redirect to home or dashboard after login
-        history.push('/');
+        // Set authentication token or session
+        console.log('Login successful');
+        navigate('/'); // Redirect after successful login
       }
     } catch (error) {
       console.error('Login failed:', error);
@@ -25,10 +27,10 @@ const Login = () => {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          placeholder="Email or Username"
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
           required
         />
         <input
