@@ -1,7 +1,11 @@
 import axios from 'axios';
 
-// Sets the CSRF token header name and cookie name
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-axios.defaults.xsrfCookieName = 'csrftoken';
+const axiosInstance = axios.create({
+  baseURL: 'http://localhost:8000',
+  withCredentials: true, // Django's CSRF protection
+});
 
-export default axios;
+axiosInstance.defaults.xsrfCookieName = 'csrftoken';
+axiosInstance.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+export default axiosInstance;
