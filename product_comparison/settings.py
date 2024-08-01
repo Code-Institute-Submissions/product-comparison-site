@@ -54,7 +54,12 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000"
+]
+
+# For React application to send credentials (cookies or HTTP)
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'product_comparison.urls'
 
