@@ -34,7 +34,9 @@ const Header = () => {
                   <Link to="/about">About</Link>
                   <Link to="/contact">Contact</Link>
               </nav>
-              <button className={styles.loginButton}>Login</button>
+              <Link to="/login">
+                <button className={styles.loginButton}>Login</button>
+              </Link>
           </div>
       </div>
       <div className={`${styles.mobileMenu} ${menuActive ? styles.active : ''}`}>
@@ -42,7 +44,9 @@ const Header = () => {
           <Link to="/products" onClick={toggleMenu}>Products</Link>
           <Link to="/about" onClick={toggleMenu}>About</Link>
           <Link to="/contact" onClick={toggleMenu}>Contact</Link>
-          <button className={styles.loginButton}>Login</button>
+          <Link to="/login" onClick={toggleMenu}>
+            <button className={styles.loginButton}>Login</button>
+          </Link>
       </div>
       <div className={`${styles.searchBar} ${searchActive ? styles.active : ''}`}>
           <input type="text" placeholder="Search products..." />
