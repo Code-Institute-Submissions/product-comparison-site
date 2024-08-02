@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'rest_framework',
     'corsheaders',
+    'user_api.apps.UserApiConfig',
     'products',
 ]
 AUTHENTICATION_BACKENDS = (
