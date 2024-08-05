@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import authService from "../services/authService";
+import styles from "../styles/Register.module.css";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -17,7 +18,7 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div className={styles.registerContainer}>
       <form onSubmit={handleRegister}>
         <div>
           <label>Username</label>
