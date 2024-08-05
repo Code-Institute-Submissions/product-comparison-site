@@ -1,16 +1,15 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from '../api/setupAxios';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const Logout = () => {
-  const history = useNavigate();
+const Logout = ({ onLogout }) => {
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await axios.post('/accounts/logout/');
-      history.push('/login');
+      await onLogout();
+      navigate("/");
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Error during logout", error);
     }
   };
 
