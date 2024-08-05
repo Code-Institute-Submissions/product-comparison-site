@@ -2,8 +2,8 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api/";
 
-const register = (username, password) => {
-  return axios.post(`${API_URL}register/`, { username, password });
+const register = (username, password, email) => {
+  return axios.post(`${API_URL}register/`, { username, password, email });
 };
 
 const login = (username, password) => {
@@ -12,8 +12,14 @@ const login = (username, password) => {
     .then((response) => {
       if (response.data.access) {
         localStorage.setItem("user", JSON.stringify(response.data));
+        return response.data;
+      } else {
+        throw new Error("Login failed");
       }
-      return response.data;
+    })
+    .catch((error) => {
+      console.error("AuthService login error:", error.response.data);
+      throw error;
     });
 };
 
