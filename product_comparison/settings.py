@@ -23,7 +23,6 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'localhost:3000', '.herokuapp.com']
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://product-comparison-site-20f390de390b.herokuapp.com",
     "https://*.herokuapp.com"
 ]
 CORS_ALLOW_CREDENTIALS = True
