@@ -5,10 +5,20 @@ import styles from "../styles/Login.module.css";
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onLogin(username, password);
+    setError("");  // Clear previous errors
+    try {
+      await onLogin(username, password);
+      // Clear form fields on successful login
+      setUsername("");
+      setPassword("");
+    } catch (error) {
+      setError("Failed to login. Please check your credentials.");
+      console.error("Login error:", error);
+    }
   };
 
   return (
@@ -35,6 +45,7 @@ const Login = ({ onLogin }) => {
         </div>
         <button type="submit">Login</button>
       </form>
+      {error && <p className={styles.error}>{error}</p>}
       <p>
         Don't have an account? <Link to="/register">Register here</Link>
       </p>
