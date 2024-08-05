@@ -9,6 +9,8 @@ import Logout from "./components/Logout";
 import ProductList from "./components/ProductList";
 import "./styles/App.css";
 
+console.log('API_URL:', process.env.REACT_APP_API_URL);
+
 const App = () => {
   const [user, setUser] = useState(null);
 
