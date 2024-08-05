@@ -1,47 +1,43 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from '../api/setupAxios';
+import { Link } from 'react-router-dom';
+import styles from '../styles/Header.module.css';
 
-const Login = () => {
-  const [login, setLogin] = useState('');
+const Login = ({ onLogin }) => {
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('/accounts/login/', { login, password });
-      
-      if (response.status === 200) {
-        // Set authentication token or session
-        console.log('Login successful');
-        navigate('/'); // Redirect after successful login
-      }
-    } catch (error) {
-      console.error('Login failed:', error);
-    }
+    onLogin(username, password);
   };
 
   return (
-    <div>
+    <div className={styles.loginContainer}>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Email or Username"
-          value={login}
-          onChange={(e) => setLogin(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
         <button type="submit">Login</button>
       </form>
+      <p>
+        Don't have an account? <Link to="/register">Register here</Link>
+      </p>
     </div>
   );
 };
