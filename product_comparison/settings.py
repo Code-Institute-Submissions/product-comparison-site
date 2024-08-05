@@ -107,10 +107,24 @@ WSGI_APPLICATION = 'product_comparison.wsgi.application'
 DATABASES = {
     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
+SIMPLE_JWT = {
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_BLACKLIST': {
+        'BLACKLIST_AFTER_ROTATION': True
+    }
+}
+
+# REST Framework Configuration
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.herokuapp.com",
-    "http://localhost:8000"
+    "http://localhost:8000",
+    "http://localhost:3000"
 ]
 
 
