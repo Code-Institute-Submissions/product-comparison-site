@@ -4,13 +4,19 @@ import styles from "../styles/Register.module.css";
 
 const Register = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setMessage("Passwords do not match");
+      return;
+    }
     try {
-      await authService.register(username, password);
+      await authService.register(username, password, email);
       setMessage("User registered successfully");
     } catch (error) {
       setMessage("Failed to register");
@@ -21,7 +27,7 @@ const Register = () => {
     <div className={styles.registerContainer}>
       <form onSubmit={handleRegister}>
         <div>
-          <label>Username</label>
+          <label>Username:</label>
           <input
             type="text"
             value={username}
@@ -29,11 +35,27 @@ const Register = () => {
           />
         </div>
         <div>
-          <label>Password</label>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Password:</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Confirm Password:</label>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
         <button type="submit">Register</button>
