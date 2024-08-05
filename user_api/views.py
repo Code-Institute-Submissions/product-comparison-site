@@ -4,7 +4,6 @@ from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
-from django.core.exceptions import ValidationError
 
 
 class RegisterView(APIView):
@@ -16,14 +15,10 @@ class RegisterView(APIView):
         if User.objects.filter(username=username).exists():
             return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            # Validate email format
-            User.objects.validate_email(email)
-        except ValidationError as e:
-            return Response({"error": "Invalid email format"}, status=status.HTTP_400_BAD_REQUEST)
+        if User.objects.filter(email=email).exists():
+            return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # Create user
             user = User.objects.create_user(
                 username=username, password=password, email=email)
             return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
