@@ -28,6 +28,7 @@ const Register = () => {
       <form onSubmit={handleRegister}>
         <div>
           <label>Username:</label>
+          <br></br>
           <input
             type="text"
             value={username}
@@ -36,6 +37,7 @@ const Register = () => {
         </div>
         <div>
           <label>Email:</label>
+          <br></br>
           <input
             type="email"
             value={email}
@@ -44,6 +46,7 @@ const Register = () => {
         </div>
         <div>
           <label>Password:</label>
+          <br></br>
           <input
             type="password"
             value={password}
@@ -52,6 +55,7 @@ const Register = () => {
         </div>
         <div>
           <label>Confirm Password:</label>
+          <br></br>
           <input
             type="password"
             value={confirmPassword}
