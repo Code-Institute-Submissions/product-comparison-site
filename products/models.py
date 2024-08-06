@@ -11,7 +11,6 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(default='')
     date = models.DateField(default=timezone.now)
-    time = models.TimeField(default=timezone.now)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     featured_image = models.ImageField(upload_to='products/', blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
