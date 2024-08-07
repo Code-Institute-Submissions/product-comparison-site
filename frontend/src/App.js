@@ -41,6 +41,10 @@ const App = () => {
     setProductListKey(prevKey => prevKey + 1);
   };
 
+  // Checks if the user is authenticated. If not, it redirects the user to the login page
+  const ProtectedRoute = ({ element, user, ...rest }) => {
+    return user ? element : <Navigate to="/login" {...rest} />;
+  };
 
   return (
     <Router>
@@ -58,9 +62,10 @@ const App = () => {
               <>
                 <Route path="/logout" element={<Logout onLogout={handleLogout} />} />
                 <Route 
-                path="/logout"
-                element={<Logout onLogout={handleLogout} />}
+                  path="/add-product" 
+                  element={<ProtectedRoute element={<ProductForm onProductCreated={handleProductCreated} />} user={user} />}
                 />
+              </>
             )}
           </Routes>
         </main>
