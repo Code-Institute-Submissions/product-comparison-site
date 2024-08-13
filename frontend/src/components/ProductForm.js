@@ -6,33 +6,36 @@ const ProductForm = ({ onProductCreated }) => {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
   const [excerpt, setExcerpt] = useState('');
-  const [featuredImage, setFeaturedImage] = useState(null);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(''); // Clear any existing errors
     try {
       const newProduct = {
         title,
         description,
         date,
         price,
-        category,
         excerpt,
-        featured_image: featuredImage,
       };
+
+      // Call the productService to create a new product
       await productService.createProduct(newProduct);
-      onProductCreated(); // Trigger the refresh of the product list
+
+      // Trigger the refresh of the product list
+      onProductCreated();
+
+      // Reset form fields
       setTitle('');
       setDescription('');
       setDate('');
       setPrice('');
-      setCategory('');
       setExcerpt('');
-      setFeaturedImage(null);
     } catch (error) {
       console.error('Failed to create product', error);
+      setError('Failed to create product. Please try again.');
     }
   };
 
@@ -74,15 +77,6 @@ const ProductForm = ({ onProductCreated }) => {
         />
       </div>
       <div>
-        <label>Category</label>
-        <input
-          type="text"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          required
-        />
-      </div>
-      <div>
         <label>Excerpt</label>
         <textarea
           value={excerpt}
@@ -90,13 +84,7 @@ const ProductForm = ({ onProductCreated }) => {
           required
         ></textarea>
       </div>
-      <div>
-        <label>Featured Image</label>
-        <input
-          type="file"
-          onChange={(e) => setFeaturedImage(e.target.files[0])}
-        />
-      </div>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <button type="submit">Create Product</button>
     </form>
   );

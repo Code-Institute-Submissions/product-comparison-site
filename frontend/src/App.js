@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import authService from "./services/authService";
@@ -16,6 +21,7 @@ const App = () => {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
+    console.log("Loaded User from Local Storage:", userData);
     if (userData) {
       setUser(userData);
     }
@@ -23,11 +29,15 @@ const App = () => {
 
   const handleLogin = async (username, password) => {
     try {
-      const userData = await authService.login(username, password);
-      localStorage.setItem("user", JSON.stringify(userData));
-      setUser(userData);
+      const tokens = await authService.login(username, password);
+      const userData = await authService.fetchUserData(tokens.access); // New step to fetch user data
+      const fullUserData = { ...tokens, ...userData }; // Combine tokens and user data
+      console.log("Login Successful:", fullUserData);
+      localStorage.setItem("user", JSON.stringify(fullUserData));
+      setUser(fullUserData);
     } catch (error) {
       console.error("Failed to login", error);
+      alert("Login failed: " + error.message);
     }
   };
 
@@ -38,12 +48,19 @@ const App = () => {
   };
 
   const handleProductCreated = () => {
-    setProductListKey(prevKey => prevKey + 1);
+    setProductListKey((prevKey) => prevKey + 1);
   };
 
-  // Checks if the user is authenticated. If not, it redirects the user to the login page
-  const ProtectedRoute = ({ element, user, ...rest }) => {
-    return user ? element : <Navigate to="/login" {...rest} />;
+  const ProtectedRoute = ({ element, user, adminOnly }) => {
+    if (!user) {
+      return <Navigate to="/login" />;
+    }
+
+    if (adminOnly && !user.is_staff) {
+      return <Navigate to="/" />;
+    }
+
+    return element;
   };
 
   return (
@@ -58,15 +75,23 @@ const App = () => {
             <Route path="/contact" element={<div>Contact Page</div>} />
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/register" element={<Register />} />
-            {user && (
-              <>
-                <Route path="/logout" element={<Logout onLogout={handleLogout} />} />
-                <Route 
-                  path="/add-product" 
-                  element={<ProtectedRoute element={<ProductForm onProductCreated={handleProductCreated} />} user={user} />}
-                />
-              </>
-            )}
+
+            <Route
+              path="/add-product"
+              element={
+                <ProtectedRoute user={user} adminOnly={true}>
+                  <ProductForm onProductCreated={handleProductCreated} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/logout"
+              element={
+                <ProtectedRoute user={user}>
+                  <Logout onLogout={handleLogout} />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </main>
         <Footer />

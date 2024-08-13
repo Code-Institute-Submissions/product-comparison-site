@@ -1,9 +1,9 @@
-import axios from 'axios';
+// src/services/productService.js
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api/";
+import api from './api'; // Import the configured Axios instance from api.js
 
 const getProducts = () => {
-  return axios.get(`${API_URL}products/`);
+  return api.get(`products/`);
 };
 
 const createProduct = (productData) => {
@@ -11,7 +11,10 @@ const createProduct = (productData) => {
   for (const key in productData) {
     formData.append(key, productData[key]);
   }
-  return axios.post(`${API_URL}products/create/`, formData, {
+
+  // You no longer need to manually add the Authorization header,
+  // because it's handled by the interceptor in api.js
+  return api.post(`products/create/`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

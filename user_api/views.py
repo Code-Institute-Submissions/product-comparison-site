@@ -6,6 +6,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+import logging
 
 
 class RegisterView(APIView):
@@ -30,11 +33,17 @@ class RegisterView(APIView):
             return Response({"error": f"Failed to create user: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+# Set up logging
+logger = logging.getLogger(__name__)
+
+
 class LoginView(APIView):
     def post(self, request):
         try:
             username = request.data.get('username')
             password = request.data.get('password')
+
+            logger.debug(f"Attempting login for user: {username}")
 
             # Validate if username and password are provided
             if not username or not password:
@@ -49,11 +58,12 @@ class LoginView(APIView):
                 return Response({
                     'refresh': str(refresh),
                     'access': str(refresh.access_token),
-                })
+                }, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
         except Exception as e:
+            logger.error(f"Login error: {str(e)}")
             return Response({"error": f"Internal server error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -70,3 +80,15 @@ class LogoutView(APIView):
             except Exception as e:
                 return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'detail': 'Refresh token not provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_detail(request):
+    user = request.user
+    user_data = {
+        "username": user.username,
+        "email": user.email,
+        "is_staff": user.is_staff,
+    }
+    return Response(user_data)

@@ -13,6 +13,8 @@ const login = (username, password) => {
       if (response.data.access) {
         localStorage.setItem("user", JSON.stringify(response.data));
         return response.data;
+      } else if (typeof response.data === 'string' && response.data.startsWith('<')) {
+        throw new Error("Received HTML instead of JSON");
       } else {
         throw new Error("Login failed");
       }
@@ -21,6 +23,19 @@ const login = (username, password) => {
       console.error("AuthService login error:", error.response.data);
       throw error;
     });
+};
+
+const fetchUserData = (accessToken) => {
+  return axios.get(`${API_URL}user/`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  }).then(response => {
+    return response.data;
+  }).catch(error => {
+    console.error("Failed to fetch user data:", error.response.data);
+    throw error;
+  });
 };
 
 const logout = async () => {
@@ -45,6 +60,7 @@ const logout = async () => {
 const authService = {
   register,
   login,
+  fetchUserData,
   logout,
 };
 

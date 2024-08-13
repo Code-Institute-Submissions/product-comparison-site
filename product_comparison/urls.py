@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('user_api.urls')),
+    # path('api-auth/', include('rest_framework.urls')),
     path('api/', include('products.urls')),
     # Catch all other paths and serve the React app
     re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),

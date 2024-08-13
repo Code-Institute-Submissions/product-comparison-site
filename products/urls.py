@@ -4,6 +4,7 @@ from .views import ProductListView, ProductCreateView, ProductDetailView, Catego
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 # Define the router and register viewsets
 router = DefaultRouter()
 router.register(r'categories', CategoryViewSet)
