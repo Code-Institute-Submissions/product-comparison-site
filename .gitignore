@@ -6,6 +6,8 @@ __pycache__/
 *.py[cod]
 node_modules/
 venv/
+*.pyc
+*.pyo
 
 # ignoring migrations
 **/migrations/**

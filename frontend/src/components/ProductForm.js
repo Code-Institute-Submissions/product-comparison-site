@@ -1,17 +1,34 @@
-import React, { useState } from 'react';
-import productService from '../services/productService';
+import React, { useState, useEffect } from "react";
+import productService from "../services/productService";
 
-const ProductForm = ({ onProductCreated }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState('');
-  const [price, setPrice] = useState('');
-  const [excerpt, setExcerpt] = useState('');
-  const [error, setError] = useState('');
+const ProductForm = ({ onProductCreated, user }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [price, setPrice] = useState("");
+  const [excerpt, setExcerpt] = useState("");
+  const [error, setError] = useState("");
+
+  // Admin check
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    // Assuming the user object has an `isAdmin` flag or you could check the user's role
+    if (user && (user.is_superuser || user.is_staff)) {
+      setIsAdmin(true);
+    } else {
+      setError("You do not have permission to access this page.");
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Clear any existing errors
+    if (!isAdmin) {
+      setError("You do not have permission to perform this action.");
+      return;
+    }
+    setError(""); // Clear any existing errors
+
     try {
       const newProduct = {
         title,
@@ -28,16 +45,20 @@ const ProductForm = ({ onProductCreated }) => {
       onProductCreated();
 
       // Reset form fields
-      setTitle('');
-      setDescription('');
-      setDate('');
-      setPrice('');
-      setExcerpt('');
+      setTitle("");
+      setDescription("");
+      setDate("");
+      setPrice("");
+      setExcerpt("");
     } catch (error) {
-      console.error('Failed to create product', error);
-      setError('Failed to create product. Please try again.');
+      console.error("Failed to create product", error);
+      setError("Failed to create product. Please try again.");
     }
   };
+
+  if (!isAdmin) {
+    return <p style={{ color: "red" }}>{error}</p>;
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -84,7 +105,7 @@ const ProductForm = ({ onProductCreated }) => {
           required
         ></textarea>
       </div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <button type="submit">Create Product</button>
     </form>
   );

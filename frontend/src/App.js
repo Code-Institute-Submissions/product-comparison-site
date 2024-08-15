@@ -51,17 +51,20 @@ const App = () => {
     setProductListKey((prevKey) => prevKey + 1);
   };
 
-  const ProtectedRoute = ({ element, user, adminOnly }) => {
-    if (!user) {
-      return <Navigate to="/login" />;
-    }
+  // const ProtectedRoute = ({ element, user, adminOnly }) => {
+  //   // If user is not logged in, redirect to the login page
+  //   if (!user) {
+  //     return <Navigate to="/login" />;
+  //   }
 
-    if (adminOnly && !user.is_staff) {
-      return <Navigate to="/" />;
-    }
+  //   // If the route is admin-only and the user is not an admin, redirect to the home page
+  //   if (adminOnly && !user.isAdmin) {
+  //     return <Navigate to="/" />;
+  //   }
 
-    return element;
-  };
+  //   // If the user is logged in and (adminOnly is false or the user is an admin), render the element
+  //   return element;
+  // };
 
   return (
     <Router>
@@ -79,18 +82,15 @@ const App = () => {
             <Route
               path="/add-product"
               element={
-                <ProtectedRoute user={user} adminOnly={true}>
-                  <ProductForm onProductCreated={handleProductCreated} />
-                </ProtectedRoute>
+                <ProductForm
+                  onProductCreated={handleProductCreated}
+                  user={user}
+                />
               }
             />
             <Route
               path="/logout"
-              element={
-                <ProtectedRoute user={user}>
-                  <Logout onLogout={handleLogout} />
-                </ProtectedRoute>
-              }
+              element={<Logout onLogout={handleLogout} user={user} />}
             />
           </Routes>
         </main>

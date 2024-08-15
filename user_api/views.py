@@ -82,13 +82,26 @@ class LogoutView(APIView):
         return Response({'detail': 'Refresh token not provided'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def user_detail(request):
-    user = request.user
-    user_data = {
-        "username": user.username,
-        "email": user.email,
-        "is_staff": user.is_staff,
-    }
-    return Response(user_data)
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def user_detail(request):
+#     user = request.user
+#     user_data = {
+#         "username": user.username,
+#         "email": user.email,
+#         "is_staff": user.is_staff,
+#     }
+#     return Response(user_data)
+
+class UserDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        user_data = {
+            'username': user.username,
+            'email': user.email,
+            'is_superuser': user.is_superuser,
+            'is_staff': user.is_staff,
+        }
+        return Response(user_data, status=status.HTTP_200_OK)

@@ -6,9 +6,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('user_api.urls')),
-    # path('api-auth/', include('rest_framework.urls')),
-    path('api/', include('products.urls')),
+    path('api/auth/', include('user_api.urls')),  # Using 'auth' as prefix for user-related routes
+    path('api/products/', include('products.urls')),  # Prefix for product-related routes
+    path('api-auth/', include('rest_framework.urls')),  # Optional: For DRF's login view
     # Catch all other paths and serve the React app
     re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
 ]
